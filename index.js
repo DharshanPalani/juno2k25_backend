@@ -1,6 +1,7 @@
 import express from 'express';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -11,6 +12,8 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
+
+app.use(cors());
 
 app.get('/juno2k25/namelist', async (req, res) => {
   const { data, error } = await supabase.from('namelist').select();
@@ -41,7 +44,6 @@ app.get('/juno2k25/teamlist', async (req, res) => {
 
   res.json(data);
 });
-
 
 app.get('/juno2k25/team-members', async (req, res) => {
   try {
@@ -95,7 +97,6 @@ app.get('/juno2k25/team-members', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
 
 // Start the server
 app.listen(PORT, () => {
